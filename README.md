@@ -3,5 +3,5 @@ A wrapper and opinionated way of working with [Cobra](https://github.com/spf13/c
 
 ## Install
 ```bash
-go get -u github.com/eddieowens/kaa
+go get github.com/eddieowens/kaa
 ```
