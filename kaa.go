@@ -32,9 +32,18 @@ func Handle(runners ...Runner) CobraRunner {
 		for _, r := range runners {
 			err := r(ctx)
 			if err != nil {
+				ctx.(*contextImpl).error = err
 				_ = cmd.Usage()
+				if OnError != nil {
+					os.Exit(OnError(ctx))
+				}
 				os.Exit(1)
 			}
 		}
 	}
 }
+
+var OnError OnErrorFunc
+
+// When an error occurs in a command, perform some logic and return the exit code.
+type OnErrorFunc func(ctx Context) int

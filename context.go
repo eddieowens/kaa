@@ -28,6 +28,9 @@ type Context interface {
 	//     optional: If the arg cannot be found, no panic is raised and the field is kept as the default.
 	// Flag tag value: The name of the flag specified in the cobra.Command
 	Bind(structPtr interface{}) error
+
+	// If an error occurred, this method will return a non-nil error.
+	Error() error
 }
 
 func NewContext(cmd *cobra.Command, args []string) Context {
@@ -74,8 +77,13 @@ func cmdFlagFromTagStr(tagStr string) *cmdFlag {
 }
 
 type contextImpl struct {
-	cmd  *cobra.Command
-	args []string
+	cmd   *cobra.Command
+	args  []string
+	error error
+}
+
+func (c *contextImpl) Error() error {
+	return c.error
 }
 
 func (c *contextImpl) Bind(structPtr interface{}) error {
